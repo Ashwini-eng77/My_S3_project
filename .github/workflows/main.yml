@@ -23,8 +23,8 @@ jobs:
       # Step 3: Sync repository files to S3
       - name: Sync with S3
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: eu-west-2  # Your bucket's region
+          AWS_ACCESS_KEY_ID: AKIA3ZDM7F3NV6M7GVEA
+          AWS_SECRET_ACCESS_KEY: mZHVStCof3SmYlVShl56syQen1NkGUpwOhJfBb3a
+          AWS_DEFAULT_REGION: eu-north-1  # Your bucket's region
         run: |
           aws s3 sync . s3://amazon-s3-newdemo12/ 
