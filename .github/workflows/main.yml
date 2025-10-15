@@ -1,0 +1,30 @@
+name: Sync with S3
+
+on:
+  push:
+    branches:
+      - main  # Runs whenever you push to main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout your repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Step 2: Install AWS CLI
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli
+
+      # Step 3: Sync repository files to S3
+      - name: Sync with S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-west-2  # Your bucket's region
+        run: |
+          aws s3 sync . s3://amazon-s3-newdemo12/ 
