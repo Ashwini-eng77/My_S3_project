@@ -1,0 +1,278 @@
+<!--
+Beautiful Single-File Website
+Save as: index.html and open in your browser.
+Includes: responsive layout, gradient hero, glass cards, simple animations, accessible markup.
+Customize colors, fonts, and images as you like.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurora — Beautiful Demo Site</title>
+  <meta name="description" content="A beautiful, modern single-file website template with subtle animations and glassmorphism." />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-1: #0f172a; /* deep navy */
+      --accent-1: 220 90% 60%; /* HSL light color used in gradients */
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.04);
+      --card-radius: 18px;
+      --blur: 12px;
+      --muted: rgba(255,255,255,0.65);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+
+    /* Reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(99,102,241,0.12), transparent),
+                  radial-gradient(900px 400px at 90% 90%, rgba(16,185,129,0.08), transparent),
+                  linear-gradient(180deg, #071026 0%, #081023 50%, #05101a 100%);
+      color: white;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding-bottom:80px;
+    }
+
+    .container{max-width:1100px;margin:0 auto;padding:28px}
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 0;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg, hsl(var(--accent-1) / 1), #7c3aed);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.45);font-weight:800
+    }
+    .brand h1{font-size:16px;margin:0}
+    nav{display:flex;gap:16px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px}
+    nav a:hover{color:white}
+
+    /* Mobile nav */
+    .menu-toggle{display:none;background:transparent;border:none;color:var(--muted);font-weight:700}
+
+    /* Hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:28px;
+    }
+    .hero .eyebrow{display:inline-block;padding:6px 12px;background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));border-radius:999px;border:1px solid var(--glass-border);font-weight:700;color:var(--muted);font-size:13px}
+
+    .title{font-size:44px;line-height:1.02;margin:14px 0 12px}
+    .lead{color:var(--muted);font-size:17px;max-width:52ch}
+
+    .cta-row{margin-top:18px;display:flex;gap:12px}
+    .btn{padding:12px 18px;border-radius:12px;border:0;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg, hsl(var(--accent-1) / 1), #7c3aed);box-shadow:0 8px 30px rgba(124,58,237,0.18)}
+    .btn-ghost{background:transparent;border:1px solid var(--glass-border);color:var(--muted)}
+
+    /* Right hero card */
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:var(--card-radius);padding:18px;border:1px solid var(--glass-border);backdrop-filter: blur(var(--blur));
+      box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+    }
+    .hero-card .stat{display:flex;align-items:center;gap:12px}
+
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .card{
+      border-radius:16px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid var(--glass-border);backdrop-filter: blur(var(--blur));
+    }
+    .card h3{margin:6px 0 8px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
+    .image{height:160px;border-radius:12px;background-size:cover;background-position:center;border:1px solid rgba(255,255,255,0.04)}
+
+    footer{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      .container{padding:18px}
+      nav{display:none}
+      .menu-toggle{display:block}
+      .features{grid-template-columns:1fr}
+      .gallery{grid-template-columns:1fr}
+      .title{font-size:32px}
+    }
+
+    /* subtle appear animations */
+    .reveal{opacity:0;transform:translateY(8px);transition:all 700ms cubic-bezier(.2,.9,.26,1)}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* tiny helper */
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;border:1px solid var(--glass-border);background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00))}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1 style="margin:0">Aurora</h1>
+          <div style="font-size:12px;color:var(--muted)">Design • Motion • Web</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main Navigation">
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <span class="eyebrow reveal">New · 2025 Collection</span>
+          <h2 class="title reveal">Craft beautiful experiences with subtle motion and calm color.</h2>
+          <p class="lead reveal">A starter template that focuses on clarity, typography, and soft micro-interactions. Perfect for portfolios, landing pages, and small creative sites.</p>
+
+          <div class="cta-row reveal">
+            <button class="btn btn-primary">Get started</button>
+            <button class="btn btn-ghost">Explore</button>
+          </div>
+
+          <div style="margin-top:18px" class="reveal">
+            <span class="pill">Dark theme</span>
+            <span style="margin-left:8px;color:var(--muted);font-size:13px">·  Responsive  ·  Accessible</span>
+          </div>
+        </div>
+
+        <aside class="hero-card reveal" aria-hidden="false">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-size:12px;color:var(--muted)">Our promise</div>
+              <div style="font-size:18px;font-weight:800">Calm, fast, delightful</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:12px;color:var(--muted)">Users</div>
+              <div style="font-weight:800;font-size:18px">24.8k</div>
+            </div>
+          </div>
+
+          <div style="height:8px;background:linear-gradient(90deg,#7c3aed,#06b6d4);border-radius:999px;margin-bottom:14px"></div>
+
+          <div style="display:flex;gap:10px;align-items:center">
+            <div style="width:48px;height:48px;border-radius:10px;background:url('https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=') center/cover"></div>
+            <div style="flex:1">
+              <div style="font-weight:700">Design system</div>
+              <div style="font-size:13px;color:var(--muted)">Reusable components & tokens</div>
+            </div>
+            <div style="font-weight:700;color:var(--muted)">v1.2</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="features" class="features" style="margin-top:40px">
+        <article class="card reveal">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 3 2-7L2 9h7l3-7z" stroke="currentColor" stroke-width="0.8" opacity="0.9"/></svg>
+          <h3>Designed with care</h3>
+          <p class="muted">Typography-first approach with comfortable line-lengths and hierarchy.</p>
+        </article>
+
+        <article class="card reveal">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="0.8"/></svg>
+          <h3>Responsive</h3>
+          <p class="muted">Layouts that adapt from phones to wide screens without extra markup.</p>
+        </article>
+
+        <article class="card reveal">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="0.8"/></svg>
+          <h3>Subtle motion</h3>
+          <p class="muted">Micro-interactions guide the eye without being flashy.</p>
+        </article>
+      </section>
+
+      <section id="gallery" class="gallery">
+        <div class="image reveal" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=')"></div>
+        <div class="image reveal" style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=')"></div>
+        <div class="image reveal" style="background-image:url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=')"></div>
+      </section>
+
+      <section id="contact" style="margin-top:40px">
+        <div class="card reveal">
+          <h3>Let's make something beautiful</h3>
+          <p class="muted">Drop a line and let's talk about design, motion, or building your next site.</p>
+
+          <form style="margin-top:14px;display:flex;flex-direction:column;gap:10px;max-width:480px">
+            <input aria-label="Your name" placeholder="Your name" style="padding:12px;border-radius:10px;border:1px solid var(--glass-border);background:transparent;color:white" />
+            <input aria-label="Email" placeholder="you@domain.com" style="padding:12px;border-radius:10px;border:1px solid var(--glass-border);background:transparent;color:white" />
+            <textarea aria-label="Message" placeholder="Tell me about your project" rows="4" style="padding:12px;border-radius:10px;border:1px solid var(--glass-border);background:transparent;color:white"></textarea>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" type="button">Send</button>
+              <button class="btn btn-ghost" type="reset">Reset</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="muted">© 2025 Aurora • Crafted with care</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="muted" href="#">Terms</a>
+        <a class="muted" href="#">Privacy</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Mobile nav toggle
+    const toggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+    toggle?.addEventListener('click', ()=>{
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.style.display = expanded ? 'flex' : 'flex';
+      // we'll just toggle a simple slide for small screens
+      if(window.innerWidth <= 640){
+        nav.style.position = expanded ? '' : 'absolute';
+        nav.style.top = expanded ? '' : '72px';
+        nav.style.right = expanded ? '' : '18px';
+        nav.style.background = expanded ? '' : 'linear-gradient(180deg, rgba(6,8,20,0.96), rgba(5,6,16,0.98))';
+        nav.style.padding = expanded ? '' : '12px';
+        nav.style.borderRadius = expanded ? '' : '12px';
+        nav.style.flexDirection = 'column';
+        nav.style.gap = '10px';
+      }
+    });
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add('visible');}
+      });
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // Small accessibility enhancement: prefer-reduced-motion
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(prefersReduced.matches){
+      document.querySelectorAll('.reveal').forEach(el=>el.style.transition='none');
+    }
+  </script>
+</body>
+</html>
